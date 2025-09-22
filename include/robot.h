@@ -1,7 +1,7 @@
 #ifndef __ROBOT_H_INCLUDED__
 #define __ROBOT_H_INCLUDED__
 
-#include "drivetrain.h"
+#include "subsystems/drivetrain.h"
 
 class Robot
 {

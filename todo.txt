@@ -1,0 +1,33 @@
+
+Joystick Input
+- add curve to joystick inputs
+- look into cheesy drive? https://wiki.purduesigbots.com/software/robotics-basics/curvature-cheesy-drive
+
+Odometry
+- test Odometry
+- run odometry in a separate thread
+- organize odometry code
+    - should it be in drivetrain? or outside of drivetrain?
+    - if implemented thread, inside drivetrain makes sense
+- need some way to visualize odometry
+
+Util files
+- need PID, angles, poses
+
+Motion Planning
+- what does 254 do :0
+- IDEAL GOAL:
+    - function to align to scoring position from anywhere on the field
+    - Reeds Shepp planning or some other tank path following algorithm
+        combined with object avoidance
+        - could APF work if path following generates vectors to follow?
+    - function to automatically spit out cube if in range of the target
+- IF IDEAL GOAL:
+    - autos become a bit easier, just a matter of copy-pasting a bunch
+        of functions
+
+- kinda cool path plan website: https://ashton254.github.io/VEX-ZED-Path-Planner/
+    - more so for coordinates
+- a lot more sophisticated path following tool: https://docs.path.jerryio.com/docs/formats/LemLibFormatV0_5
+
+    
