@@ -13,7 +13,7 @@ struct Pose
 
     void print()
     {
-        printf("Pose(x: %.4f, y: %.4f, deg: %.2f)\n", x, y, radians * (180.0 / M_PI));
+        printf("Pose(x: %.3f, y: %.3f, deg: %.2f)\n", x, y, radians * (180.0 / M_PI));
     }
 };
 

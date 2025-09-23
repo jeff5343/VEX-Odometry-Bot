@@ -9,7 +9,22 @@
 #include "util/pose.h"
 #endif
 
-/* ALL THE VARIABLES HERE ARE IN INCHES */
+/**
+ * Calculates position on field using 3 encoders.
+ *
+ * - All units are in inches
+ * - two encoders on the sides and one encoder in the back
+ * - Coordinate system used is based on right hand rule:
+ *      X is forward, Y is sideways, Counter Clock Wise (CCW) is positive
+ *      https://en.wikipedia.org/wiki/Right-hand_rule#Coordinates
+ * - Good Resources on Odometry:
+ *     explains the math:
+ *         https://www.youtube.com/watch?v=vxSK2NYtYJQ&t=35s
+ *     more specifics on implementation:
+ *         http://thepilons.ca/wp-content/uploads/2018/10/Tracking.pdf
+ *     OkapiLib odometry implementation (math is almost the same):
+ *         https://github.com/purduesigbots/OkapiLib/blob/master/src/api/odometry/threeEncoderOdometry.cpp
+ * */
 
 class Odometry
 {

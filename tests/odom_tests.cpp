@@ -46,50 +46,79 @@ public:
         odomTest.getPose().print();
     }
 
+    /* Repeats updating odometry object and print pose for n times */
+    void repeatTestWithEncoderDistance(int n, double leftDist, double rightDist, double backDist)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            testWithEncoderDistance(leftDist, rightDist, backDist);
+            leftDist += leftDist / double(i + 1);
+            rightDist += rightDist / double(i + 1);
+            backDist += backDist / double(i + 1);
+        }
+    }
+
     void reset()
     {
         odomTest.resetOdometry(0, 0, 0);
     }
 };
 
-int main()
+void simpleTests(OdometryTest &odomTest)
 {
-    OdometryTest odomTest{};
-
     printf("\nGOING STRAIGHT:\n");
     odomTest.testWithEncoderDistance(1.0, 1.0, 0.0);
     odomTest.reset();
 
+    printf("\nDRIFTING PURE SIDEWAYS\n");
+    odomTest.testWithEncoderDistance(
+        0, 0, 10.0);
+    odomTest.reset();
+
+    printf("\nDRIFTING DIAGONALLY\n");
+    odomTest.testWithEncoderDistance(
+        10, 10, 7.07);
+    odomTest.reset();
+
+    printf("\nROTATING IN PLACE:\n");
+    odomTest.testWithEncoderDistance(
+        5, -5, -5.34483);
+    odomTest.reset();
+
     printf("\nGOING RIGHT ANGELED:\n");
-    odomTest.testWithEncoderDistance(17.606, 13.810, 2.03);
+    odomTest.testWithEncoderDistance(17.606, 13.810, -2.03);
     odomTest.reset();
 
     printf("\nGOING LEFT ANGELED:\n");
-    odomTest.testWithEncoderDistance(13.810, 17.606, -2.03);
+    odomTest.testWithEncoderDistance(13.810, 17.606, 2.03);
+    odomTest.reset();
+}
+
+void repeatedTests(OdometryTest &odomTest)
+{
+    printf("\nROTATING IN PLACE CW 4 TIMES:\n");
+    odomTest.repeatTestWithEncoderDistance(4, 15.0, -15.0, -16.034);
     odomTest.reset();
 
-    printf("\nGOING RIGHT ANGELED 3 TIMES:\n");
-    double leftDist = 17.606, rightDist = 13.810, backDist = 2.03;
-    for (int i = 0; i < 3; i++)
-    {
-        odomTest.testWithEncoderDistance(leftDist, rightDist, backDist);
-        leftDist += 17.606;
-        rightDist += 13.810;
-        backDist += 2.03;
-    }
+    printf("\nROTATING IN PLACE CCW 4 TIMES:\n");
+    odomTest.repeatTestWithEncoderDistance(4, -15.0, 15.0, 16.034);
     odomTest.reset();
 
-    printf("\nGOING HARD RIGHT ANGELED 3 TIMES:\n");
-    leftDist = 16.0, rightDist = -12.0, backDist = 14.97;
-    for (int i = 0; i < 3; i++)
-    {
-        odomTest.testWithEncoderDistance(
-            leftDist, rightDist, backDist);
-        leftDist += 16.0;
-        rightDist += -12.0;
-        backDist += 14.97;
-    }
+    printf("\nGOING RIGHT ANGELED 4 TIMES:\n");
+    odomTest.repeatTestWithEncoderDistance(4, 17.606, 13.810, -2.029);
     odomTest.reset();
+
+    printf("\nGOING HARD RIGHT ANGELED 4 TIMES:\n");
+    odomTest.repeatTestWithEncoderDistance(4, 16.0, -12.0, -14.97);
+    odomTest.reset();
+}
+
+int main()
+{
+    OdometryTest odomTest{};
+
+    simpleTests(odomTest);
+    repeatedTests(odomTest);
 
     return 0;
 }

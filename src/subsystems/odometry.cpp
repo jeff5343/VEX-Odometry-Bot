@@ -36,50 +36,55 @@ void Odometry::updatePose()
     double deltaTheta = (dLeftDist - dRightDist) /
                         (DIST_CENTER_TO_RIGHT_WHEEL + DIST_CENTER_TO_LEFT_WHEEL);
 
-    double correctedDBackDist = dBackDist -
-                       // this subtracts the back wheel's distance when moving
-                       ((deltaTheta / (2 * M_PI)) * (2 * DIST_CENTER_TO_BOT_WHEEL * M_PI));
-
-    // printf("back delta: %.2f\n", correctedDBackDist);
-    // printf("delta theta: %.2f\n", deltaTheta);
+    // (used for debugging)
+    // the distance the back wheel should have traveled if there was no drift
+    // double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
+    // printf(" backWheelDrift: %.3f\n", dBackDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
-    double relXDist, relYDist;
+    //  Y axis is relative side to side movement
+    //  X axis is relative front and back movement
+    double relYDist, relXDist;
     if (dLeftDist == dRightDist)
     {
-        relXDist = correctedDBackDist;
-        relYDist = dLeftDist;
+        // heading has not changed
+        relYDist = dBackDist;
+        relXDist = dLeftDist;
     }
     else
     {
+        // heading has changed, formulas to find distance
+        // traveled using the arcs traveled by the encoders
         double cof = 2.0 * sin(deltaTheta / 2.0);
-        relXDist = cof * ((correctedDBackDist / deltaTheta) +
-                          DIST_CENTER_TO_BOT_WHEEL);
-        relYDist = cof * ((dRightDist / deltaTheta) +
+        relYDist = cof * ((dBackDist / deltaTheta) +
+                          (DIST_CENTER_TO_BOT_WHEEL));
+        relXDist = cof * ((dRightDist / deltaTheta) +
                           DIST_CENTER_TO_RIGHT_WHEEL);
     }
 
     // convert relative vector into global vector
-    double relativeMagnitude = sqrt((relXDist * relXDist) + (relYDist * relYDist));
-    double relativeHeading = atan2(relYDist, relXDist);
+    double relativeMagnitude = sqrt((relYDist * relYDist) + (relXDist * relXDist));
+    double relativeHeading = atan2(relXDist, relYDist);
 
+    // subtract (current heading of robot + the change in heading)
     relativeHeading -= (pose.radians + (deltaTheta / 2.0));
 
-    double dX = cos(relativeHeading) * relativeMagnitude;
-    double dY = sin(relativeHeading) * relativeMagnitude;
+    double dY = cos(relativeHeading) * relativeMagnitude;
+    double dX = sin(relativeHeading) * relativeMagnitude;
 
     // check for invalid values
-    if (std::isnan(dX))
-        dX = 0;
     if (std::isnan(dY))
         dY = 0;
+    if (std::isnan(dX))
+        dX = 0;
     if (std::isnan(deltaTheta))
         deltaTheta = 0;
 
     // update pose object
     pose.x += dX;
     pose.y += dY;
-    pose.radians += deltaTheta;
+    // subtracting instead of adding so CCW+ and CW-
+    pose.radians -= deltaTheta;
     // wrap radians
     pose.radians = Angle::wrapRadians(pose.radians);
 }
