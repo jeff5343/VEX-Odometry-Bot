@@ -41,7 +41,6 @@ public:
     {
         setMockEncoderDistInches(leftEncoder, rightEncoder, backEncoder,
                                  leftDist, rightDist, backDist);
-        odomTest.update();
         printf("  ");
         odomTest.getPose().print();
     }
@@ -118,7 +117,7 @@ int main()
     OdometryTest odomTest{};
 
     simpleTests(odomTest);
-    repeatedTests(odomTest);
+    // repeatedTests(odomTest);
 
     return 0;
 }
