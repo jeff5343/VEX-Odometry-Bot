@@ -85,11 +85,11 @@ void simpleTests(OdometryTest &odomTest)
         5, -5, -5.34483);
     odomTest.reset();
 
-    printf("\nGOING RIGHT ANGELED:\n");
+    printf("\nGOING RIGHT ANGLED:\n");
     odomTest.testWithEncoderDistance(17.606, 13.810, -2.03);
     odomTest.reset();
 
-    printf("\nGOING LEFT ANGELED:\n");
+    printf("\nGOING LEFT ANGLED:\n");
     odomTest.testWithEncoderDistance(13.810, 17.606, 2.03);
     odomTest.reset();
 }
@@ -104,11 +104,11 @@ void repeatedTests(OdometryTest &odomTest)
     odomTest.repeatTestWithEncoderDistance(4, -15.0, 15.0, 16.034);
     odomTest.reset();
 
-    printf("\nGOING RIGHT ANGELED 4 TIMES:\n");
+    printf("\nGOING RIGHT ANGLED 4 TIMES:\n");
     odomTest.repeatTestWithEncoderDistance(4, 17.606, 13.810, -2.029);
     odomTest.reset();
 
-    printf("\nGOING HARD RIGHT ANGELED 4 TIMES:\n");
+    printf("\nGOING HARD RIGHT ANGLED 4 TIMES:\n");
     odomTest.repeatTestWithEncoderDistance(4, 16.0, -12.0, -14.97);
     odomTest.reset();
 }
