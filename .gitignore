@@ -1,5 +1,9 @@
 /bin
 /build
-.vscode
 
 compile_commands.json
+
+c_cpp_properties.json
+extensions.json
+settings.json
+tasks.json
