@@ -28,7 +28,7 @@ namespace vex
         }
     };
 
-    // Mock VEX threading
+    // Mock VEX threading (errors can be ignored)
     using thread = std::thread;
     using mutex = std::mutex;
 
