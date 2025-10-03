@@ -68,3 +68,7 @@ void Drivetrain::arcadeDrive(double x, double y)
     setVelocityLeftMotors(leftOut * Drivetrain::MAX_RPM);
     setVelocityRightMotors(rightOut * Drivetrain::MAX_RPM);
 }
+
+void Drivetrain::log() {
+    odometry.getPose().print();
+}
