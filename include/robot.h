@@ -2,6 +2,7 @@
 #define __ROBOT_H_INCLUDED__
 
 #include "subsystems/drivetrain.h"
+#include "commands/pid_drive.h"
 
 class Robot
 {
@@ -11,7 +12,16 @@ private:
     // subsystems
     Drivetrain drivetrain{};
 
+    PidDrive pidDrive{
+        // turning pid constants
+        PidConstants{1.0, 0.0, 0.0}, 
+        // straight pid constants
+        PidConstants{1.0, 0.0, 0.0}, 
+        drivetrain};
+
     const vex::controller controller{};
+
+    bool driveSetpointSet = false;
 
 public:
     /* get brain for encoder ports */

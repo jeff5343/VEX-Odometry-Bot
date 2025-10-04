@@ -1,16 +1,18 @@
 #ifndef __PID_H_INCLUDED__
 #define __PID_H_INCLUDED__
 
+#include "pid_constants.h"
+#include <cmath>
+
 /* very crude implementation, can be a lot more sophisticated */
-class PID
+class Pid
 {
 private:
     /* CONSTANTS */
-    double kP;
-    double kI;
-    double kD;
+    PidConstants constants;
     // in seconds
-    const double deltaTime;
+    const double deltaTime = 0.02;
+    const double setpointTolerance = 0.05;
 
     double setpoint;
     double prevError;
@@ -18,11 +20,14 @@ private:
 
 public:
     // TODO: make sure main loop runs at 20ms
-    PID(double kP, double kI, double kD)
-        : PID(kP, kI, kD, 0.02) {};
+    Pid(PidConstants constants)
+        : Pid(constants, setpointTolerance) {};
 
-    PID(double kP, double kI, double kD, double deltaTime)
-        : kP(kP), kI(kI), kD(kD), deltaTime(deltaTime) {};
+    Pid(PidConstants constants, double setpointTolerance)
+        : Pid(constants, deltaTime, setpointTolerance) {};
+
+    Pid(PidConstants constants, double deltaTime, double setpointTolerance)
+        : constants(constants), deltaTime(deltaTime), setpointTolerance(setpointTolerance) {};
 
     void setSetpoint(double setpoint)
     {
@@ -35,10 +40,17 @@ public:
         return setpoint;
     }
 
-    double getError() {
+    double getError()
+    {
         return prevError;
     }
 
+    bool isAtSetpoint()
+    {
+        return std::abs(prevError) < setpointTolerance;
+    }
+
+    // TODO: add field for 360 deg setpoints
     double calculate(double measurement)
     {
         double error = setpoint - measurement;
@@ -47,10 +59,13 @@ public:
 
         double errorDerivative = (error - prevError) / deltaTime;
 
-        return (kP * error) + (kI * totalError) - (kD * errorDerivative);
+        prevError = error;
+
+        return (constants.kP * error) + (constants.kI * totalError) + (constants.kD * errorDerivative);
     }
 
-    void reset() {
+    void reset()
+    {
         setpoint = 0;
         prevError = 0;
         totalError = 0;

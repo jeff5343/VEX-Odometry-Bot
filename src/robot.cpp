@@ -29,3 +29,13 @@ void Robot::usercontrolPeriodic()
         drivetrain.stop();
     }
 }
+
+void Robot::autonomousPeriodic()
+{
+    if (!driveSetpointSet)
+    {
+        pidDrive.setTargetPose(Pose{1.0, 0.0, 0.0});
+        driveSetpointSet = true;
+    }
+    pidDrive.update();
+}
