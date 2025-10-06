@@ -32,10 +32,17 @@ void Robot::usercontrolPeriodic()
 
 void Robot::autonomousPeriodic()
 {
-    if (!driveSetpointSet)
+    if (!isPoseSetpointSet)
     {
-        pidDrive.setTargetPose(Pose{1.0, 0.0, 0.0});
-        driveSetpointSet = true;
+        pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
+        isPoseSetpointSet = true;
     }
     pidDrive.update();
+
+    if (pidDrive.isAtSetpoint()) {
+        poseSetpointIndex += 1;
+        if (poseSetpointIndex >= poseSetpointsLength) {
+            poseSetpointIndex = 0;
+        }
+    }
 }
