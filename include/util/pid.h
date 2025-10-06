@@ -56,7 +56,6 @@ public:
         double error = setpoint - measurement;
 
         totalError += error * deltaTime;
-
         double errorDerivative = (error - prevError) / deltaTime;
 
         prevError = error;
