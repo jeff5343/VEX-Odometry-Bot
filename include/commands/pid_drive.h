@@ -16,7 +16,10 @@ private:
 
 public:
     PidDrive(PidConstants anglePidConstants, PidConstants straightPidConstants, Drivetrain &drivetrain)
-        : anglePid(anglePidConstants), straightPid(anglePidConstants), drivetrain(drivetrain) {};
+        : anglePid(anglePidConstants), straightPid(anglePidConstants), drivetrain(drivetrain)
+    {
+        anglePid.enableContinuousInput(true);
+    };
 
     void setTargetPose(Pose pose);
     void update();

@@ -11,8 +11,8 @@ private:
     /* CONSTANTS */
     PidConstants constants;
     // in seconds
-    const double deltaTime = 0.02;
-    const double setpointTolerance = 0.05;
+    const double deltaTime;
+    const double setpointTolerance;
 
     // do the endpoints wrap around
     bool continuous = false;
@@ -22,14 +22,7 @@ private:
     double totalError;
 
 public:
-    // TODO: make sure main loop runs at 20ms
-    Pid(PidConstants constants)
-        : Pid(constants, setpointTolerance) {};
-
-    Pid(PidConstants constants, double setpointTolerance)
-        : Pid(constants, setpointTolerance, deltaTime) {};
-
-    Pid(PidConstants constants, double setpointTolerance, double deltaTime)
+    Pid(PidConstants constants, double setpointTolerance = 0.05, double deltaTime = 0.02)
         : constants(constants), deltaTime(deltaTime), setpointTolerance(setpointTolerance) {};
 
     void enableContinuousInput(bool continuous)
@@ -58,7 +51,6 @@ public:
         return std::abs(prevError) < setpointTolerance;
     }
 
-    // TODO: add field for 360 deg setpoints
     double calculate(double measurement)
     {
         double error = setpoint - measurement;

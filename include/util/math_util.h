@@ -6,7 +6,7 @@
 class MathUtil
 {
 public:
-    static double clamp(double value, double low, double high)
+    inline static double clamp(double value, double low, double high)
     {
         return std::max(low, std::min(value, high));
     }
