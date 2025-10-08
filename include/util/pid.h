@@ -14,6 +14,9 @@ private:
     const double deltaTime = 0.02;
     const double setpointTolerance = 0.05;
 
+    // do the endpoints wrap around
+    bool continuous = false;
+
     double setpoint;
     double prevError;
     double totalError;
@@ -28,6 +31,11 @@ public:
 
     Pid(PidConstants constants, double deltaTime, double setpointTolerance)
         : constants(constants), deltaTime(deltaTime), setpointTolerance(setpointTolerance) {};
+
+    void enableContinuousInput(bool continuous)
+    {
+        this->continuous = continuous;
+    }
 
     void setSetpoint(double setpoint)
     {
@@ -54,6 +62,23 @@ public:
     double calculate(double measurement)
     {
         double error = setpoint - measurement;
+
+        // choose shorter path for continuous
+        if (continuous && std::abs(error) > M_PI)
+        {
+            double convSetpoint, convMeasurement;
+            if (setpoint > M_PI)
+            {
+                convSetpoint = setpoint - M_PI * 2;
+                convMeasurement = measurement;
+            }
+            else
+            {
+                convSetpoint = setpoint;
+                convMeasurement = measurement - M_PI * 2;
+            }
+            error = convSetpoint - convMeasurement;
+        }
 
         totalError += error * deltaTime;
         double errorDerivative = (error - prevError) / deltaTime;
