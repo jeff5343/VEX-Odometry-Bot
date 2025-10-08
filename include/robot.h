@@ -25,9 +25,9 @@ private:
     // for testing
     const Pose poseSetpoints[4] = {
         Pose{1.0, 0.0, 0.0},
-        Pose{1.0, 1.0, M_PI},
-        Pose{0.0, 1.0, M_PI * 2},
-        Pose{0.0, 0.0, -M_PI },
+        Pose{1.0, 1.0, M_PI / 2.0},
+        Pose{0.0, 1.0, M_PI},
+        Pose{0.0, 0.0, -M_PI / 2.0},
     };
     int poseSetpointsLength = 4;
     int poseSetpointIndex = 0;
