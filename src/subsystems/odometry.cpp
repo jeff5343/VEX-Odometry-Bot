@@ -9,11 +9,13 @@
 void Odometry::updateEncoderDistances()
 {
     double wheelCircumference = 2 * M_PI * WHEEL_RADIUS_INCHES;
+    // TODO: remove after improved odom
+    double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
     double leftD = leftEncoder.position(vex::rev) * wheelCircumference;
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
-    double backD = backEncoder.position(vex::rev) * wheelCircumference;
+    double backD = backEncoder.position(vex::rev) * backWheelCircumference;
     mutex.unlock();
 
     setNewEncoderDistances(leftD, rightD, backD);
@@ -52,8 +54,8 @@ void Odometry::updatePose()
     // printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
-    //  Y axis is relative side to side movement
     //  X axis is relative front and back movement
+    //  Y axis is relative side to side movement
     double relYDist, relXDist;
     if (dLDist == dRDist)
     {

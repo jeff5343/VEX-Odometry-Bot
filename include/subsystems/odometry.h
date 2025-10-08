@@ -83,6 +83,8 @@ private:
 
 public:
     static constexpr double WHEEL_RADIUS_INCHES = 2.0;
+    // TODO: will remove later, but for testing the back wheel has a different radius
+    static constexpr double BACK_WHEEL_RADIUS_INCHES = 2.0;
 
     Odometry(vex::encoder &leftEncoder, vex::encoder &rightEncoder, vex::encoder &backEncoder)
         : leftEncoder(leftEncoder), rightEncoder(rightEncoder), backEncoder(backEncoder)
