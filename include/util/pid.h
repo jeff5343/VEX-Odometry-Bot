@@ -27,9 +27,9 @@ public:
         : Pid(constants, setpointTolerance) {};
 
     Pid(PidConstants constants, double setpointTolerance)
-        : Pid(constants, deltaTime, setpointTolerance) {};
+        : Pid(constants, setpointTolerance, deltaTime) {};
 
-    Pid(PidConstants constants, double deltaTime, double setpointTolerance)
+    Pid(PidConstants constants, double setpointTolerance, double deltaTime)
         : constants(constants), deltaTime(deltaTime), setpointTolerance(setpointTolerance) {};
 
     void enableContinuousInput(bool continuous)
@@ -64,6 +64,7 @@ public:
         double error = setpoint - measurement;
 
         // choose shorter path for continuous
+        // TODO: use modulus operator instead
         if (continuous && std::abs(error) > M_PI)
         {
             double convSetpoint, convMeasurement;
