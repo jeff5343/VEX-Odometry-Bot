@@ -8,12 +8,11 @@
  */
 
 // If parameter is not true, test fails
-// This check function would be provided by the test framework
 // P.S. I don't really use this right now, i should
-#define IS_TRUE(x)                                                   \
-    {                                                                \
-        if (!(x))                                                    \
-            printf("%s failed on line %d\n", __FUNCTION__, __LINE__) \
+#define IS_TRUE(x)                                                    \
+    {                                                                 \
+        if (!(x))                                                     \
+            printf("%s failed on line %d\n", __FUNCTION__, __LINE__); \
     }
 
 class OdometryTest

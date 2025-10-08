@@ -25,14 +25,14 @@ private:
 
     vex::motor_group leftMotorGroup{topLeftMotor, midLeftMotor, botLeftMotor};
     vex::motor_group rightMotorGroup{topRightMotor, midRightMotor, botRightMotor};
-    
+
     // encoders
     vex::encoder leftEncoder{Ports::DRIVE_LEFT_ENCODER};
     vex::encoder rightEncoder{Ports::DRIVE_RIGHT_ENCODER};
     vex::encoder backEncoder{Ports::DRIVE_BOTTOM_ENCODER};
 
     // odometry
-    Odometry odometry{leftEncoder, rightEncoder, backEncoder};   
+    Odometry odometry{leftEncoder, rightEncoder, backEncoder};
 
     void setVelocityLeftMotors(double rpm);
     void setVelocityRightMotors(double rpm);
@@ -50,6 +50,16 @@ public:
      * @param y value of y axis of joystick
      */
     void arcadeDrive(double x, double y);
+
+    /**
+     * Controls the drivetrain by setting left and right motors with percent out
+     * @param leftOut percent out for left motors [-1.0, 1.0]
+     * @param rightOut percent out for right motors [-1.0, 1.0]
+     */
+    void setPercentOut(double leftOut, double rightOut);
+
+    /* Returns pose from odometry */
+    Pose getPose() { return odometry.getPose(); }
 };
 
 #endif
