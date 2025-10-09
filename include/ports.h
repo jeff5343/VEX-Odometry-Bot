@@ -13,10 +13,9 @@ public:
     static const int32_t DRIVE_MID_RIGHT_MOTOR;
     static const int32_t DRIVE_BOT_RIGHT_MOTOR;
 
-    // cannot be const because encoder constructor requires non-const argument
-    static vex::triport::port DRIVE_LEFT_ENCODER;
-    static vex::triport::port DRIVE_RIGHT_ENCODER;
-    static vex::triport::port DRIVE_BOTTOM_ENCODER;
+    static const int32_t DRIVE_LEFT_ENCODER;
+    static const int32_t DRIVE_RIGHT_ENCODER;
+    static const int32_t DRIVE_BOTTOM_ENCODER;
 };
 
 #endif
