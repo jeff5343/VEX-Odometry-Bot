@@ -1,8 +1,6 @@
 #include "robot.h"
 #include <cmath>
 
-const vex::brain Robot::BRAIN = vex::brain();
-
 void Robot::init() {
 
 };
@@ -16,16 +14,24 @@ void Robot::usercontrolPeriodic()
     double y = static_cast<double>(controller.Axis3.position()) / 100.0;
 
     double deadband = 0.01;
-    if (std::abs(x) <= deadband)
+    if (std::fabs(x) <= deadband)
+    {
         x = 0;
-    if (std::abs(y) <= deadband)
+    }
+    if (std::fabs(y) <= deadband)
+    {
         y = 0;
-    if (std::abs(x) > deadband || std::abs(y) > deadband)
-        drivetrain.arcadeDrive(x, y);
+    }
+    if (std::fabs(x) > deadband || std::fabs(y) > deadband)
+    {
+        drivetrain.setVelocityLeftMotors(50);
+        // drivetrain.arcadeDrive(x, y);
+    }
     else
+    {
         drivetrain.stop();
-
+    }
 
     /* ODOMETRY TESTING: */
-    drivetrain.log();
+    // drivetrain.log();
 }
