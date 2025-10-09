@@ -19,6 +19,8 @@ Drivetrain::Drivetrain()
 
 void Drivetrain::setVelocityLeftMotors(double rpm)
 {
+    // printf("%.3f\n", frontLeftMotor.current(vex::percentUnits::pct));
+    // frontLeftMotor.spin(vex::forward, rpm, vex::rpm);
     leftMotorGroup.spin(vex::forward, rpm, vex::rpm);
 }
 
@@ -70,5 +72,5 @@ void Drivetrain::arcadeDrive(double x, double y)
 }
 
 void Drivetrain::log() {
-    odometry.getPose().print();
+    // odometry.getPose().print();
 }
