@@ -15,12 +15,13 @@ private:
     static constexpr bool LEFT_MOTORS_INVERTED = true;
     static constexpr bool RIGHT_MOTORS_INVERTED = false;
 
+    // TODO: rename motors, mid motors are the motors that are elevated
     // motors
     vex::motor topLeftMotor{Ports::DRIVE_TOP_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
-    vex::motor midLeftMotor{Ports::DRIVE_MID_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
+    vex::motor midLeftMotor{Ports::DRIVE_MID_LEFT_MOTOR, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
     vex::motor botLeftMotor{Ports::DRIVE_BOT_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
     vex::motor topRightMotor{Ports::DRIVE_TOP_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
-    vex::motor midRightMotor{Ports::DRIVE_MID_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
+    vex::motor midRightMotor{Ports::DRIVE_MID_RIGHT_MOTOR, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
     vex::motor botRightMotor{Ports::DRIVE_BOT_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
 
     vex::motor_group leftMotorGroup{topLeftMotor, midLeftMotor, botLeftMotor};
