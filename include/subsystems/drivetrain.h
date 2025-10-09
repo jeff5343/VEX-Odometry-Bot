@@ -21,10 +21,6 @@ private:
 public:
     Drivetrain();
 
-    void update() {
-        odometry.update();
-    }
-
     /* Stops all motors */
     void stop();
 

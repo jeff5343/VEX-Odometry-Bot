@@ -12,11 +12,11 @@ void Odometry::updateEncoderDistances()
     // TODO: remove after improved odom
     double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
-    // mutex.lock();
+    mutex.lock();
     double leftD = leftEncoder.position(vex::rev) * wheelCircumference;
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
     double backD = backEncoder.position(vex::rev) * backWheelCircumference;
-    // mutex.unlock();
+    mutex.unlock();
 
     setNewEncoderDistances(leftD, rightD, backD);
 }
@@ -38,7 +38,7 @@ void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
 
 void Odometry::updatePose()
 {
-    // mutex.lock();
+    mutex.lock();
     // find delta heading
     double deltaTheta = (dLeftDist - dRightDist) /
                         (DIST_CENTER_TO_RIGHT_WHEEL + DIST_CENTER_TO_LEFT_WHEEL);
@@ -46,7 +46,7 @@ void Odometry::updatePose()
     double dLDist = dLeftDist;
     double dRDist = dRightDist;
     Pose currentPose = pose;
-    // mutex.unlock();
+    mutex.unlock();
 
     // (used for debugging)
     // the distance the back wheel should have traveled if there was no drift
@@ -92,7 +92,7 @@ void Odometry::updatePose()
     if (std::isnan(deltaTheta))
         deltaTheta = 0;
 
-    // mutex.lock();
+    mutex.lock();
     // update pose object
     pose.x += dX;
     pose.y += dY;
@@ -100,7 +100,7 @@ void Odometry::updatePose()
     pose.radians -= deltaTheta;
     // wrap radians
     pose.radians = Angle::wrapRadians(pose.radians);
-    // mutex.unlock();
+    mutex.unlock();
 }
 
 void Odometry::update()

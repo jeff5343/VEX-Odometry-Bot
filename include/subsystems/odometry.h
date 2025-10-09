@@ -44,28 +44,32 @@ private:
 
     Pose pose{0, 0, 0};
 
-    // vex::thread worker;
-    // vex::mutex mutex;
-    // bool workerRunning;
+    vex::thread worker;
+    vex::mutex mutex;
+    bool workerRunning;
 
     // vex threads uses c style threads rather than c++
     // don't know exaclty whats going on but ok
-    // static int vexThreadWrapper(void *param)
-    // {
-    //     return static_cast<Odometry *>(param)->threadLoop();
-    // }
+    static int vexThreadWrapper(void *param)
+    {
+        return static_cast<Odometry *>(param)->threadLoop();
+    }
 
-    // int threadLoop()
-    // {
-    //     while (workerRunning)
-    //     {
-    //         update();
-    //         printf("hi!");
-    //         vex::this_thread::sleep_for(10);
-    //     }
-    //     return 0;
-    // }
+    int threadLoop()
+    {
+        while (workerRunning)
+        {
+            update();
+            vex::this_thread::sleep_for(10);
+        }
+        return 0;
+    }
 
+    /**
+     * Updates odometry by reading encoder distances and calculating pose.
+     * Called every loop/tick by the worker thread
+     * */
+    void update();
     void updateEncoderDistances();
     void updatePose();
 
@@ -79,25 +83,25 @@ public:
 
     Odometry()
     {
-        // workerRunning = true;
-        // worker = vex::thread(Odometry::vexThreadWrapper, this);
         resetOdometry(0, 0, 0);
+        workerRunning = true;
+        worker = vex::thread(Odometry::vexThreadWrapper, this);
     };
 
     /* returns calculated pose */
     Pose getPose()
     {
-        // mutex.lock();
-        // Pose newPose = pose;
-        // mutex.unlock();
-        return pose;
+        mutex.lock();
+        Pose newPose = pose;
+        mutex.unlock();
+        return newPose;
     }
 
     void resetOdometry(double x, double y, double rad)
     {
-        // mutex.lock();
+        mutex.lock();
         pose = Pose{x, y, rad};
-        // mutex.unlock();
+        mutex.unlock();
 
         leftEncoder.setPosition(0, vex::rotationUnits::rev);
         rightEncoder.setPosition(0, vex::rotationUnits::rev);
@@ -106,17 +110,11 @@ public:
         setNewEncoderDistances(0, 0, 0);
     }
 
-    /**
-     * Updates odometry by reading encoder distances and calculating pose.
-     * Called every loop/tick by the worker thread
-     * */
-    void update();
-
     ~Odometry()
     {
         // stop worker thread
-        // workerRunning = false;
-        // worker.join();
+        workerRunning = false;
+        worker.join();
     }
 };
 
