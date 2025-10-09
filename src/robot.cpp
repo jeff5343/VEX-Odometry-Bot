@@ -9,6 +9,8 @@ void Robot::usercontrolPeriodic()
 {
     /* TELEOP DRIVING: */
 
+    drivetrain.update();
+
     // convert axis positions to range -1.0 to 1.0
     double x = static_cast<double>(controller.Axis1.position()) / 100.0;
     double y = static_cast<double>(controller.Axis3.position()) / 100.0;
@@ -32,5 +34,5 @@ void Robot::usercontrolPeriodic()
     }
 
     /* ODOMETRY TESTING: */
-    // drivetrain.log();
+    drivetrain.log();
 }

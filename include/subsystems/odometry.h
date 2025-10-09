@@ -29,13 +29,9 @@
 class Odometry
 {
 private:
-    const double DIST_CENTER_TO_RIGHT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_LEFT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_BOT_WHEEL = 7.75;
-
-    vex::rotation &leftEncoder;
-    vex::rotation &rightEncoder;
-    vex::rotation &backEncoder;
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.422;
+    static constexpr double DIST_CENTER_TO_LEFT_WHEEL = 2.422;
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = 5.328;
 
     // distances based on encoders
     double leftDist = 0;
@@ -48,32 +44,28 @@ private:
 
     Pose pose{0, 0, 0};
 
-    vex::thread worker;
-    vex::mutex mutex;
-    bool workerRunning;
+    // vex::thread worker;
+    // vex::mutex mutex;
+    // bool workerRunning;
 
     // vex threads uses c style threads rather than c++
     // don't know exaclty whats going on but ok
-    static int vexThreadWrapper(void *param)
-    {
-        return static_cast<Odometry *>(param)->threadLoop();
-    }
+    // static int vexThreadWrapper(void *param)
+    // {
+    //     return static_cast<Odometry *>(param)->threadLoop();
+    // }
 
-    int threadLoop()
-    {
-        while (workerRunning)
-        {
-            update();
-            vex::this_thread::sleep_for(10);
-        }
-        return 0;
-    }
+    // int threadLoop()
+    // {
+    //     while (workerRunning)
+    //     {
+    //         update();
+    //         printf("hi!");
+    //         vex::this_thread::sleep_for(10);
+    //     }
+    //     return 0;
+    // }
 
-    /**
-     * Updates odometry by reading encoder distances and calculating pose.
-     * Called every loop/tick by the worker thread
-     * */
-    void update();
     void updateEncoderDistances();
     void updatePose();
 
@@ -81,39 +73,50 @@ private:
     void setNewEncoderDistances(double leftDist, double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 2.75 / 2.0;
     // TODO: will remove later, but for testing the back wheel has a different radius
-    static constexpr double BACK_WHEEL_RADIUS_INCHES = 2.0;
+    static constexpr double BACK_WHEEL_RADIUS_INCHES = 4.0 / 2.0;
 
-    Odometry(vex::rotation &leftEncoder, vex::rotation &rightEncoder, vex::rotation &backEncoder)
-        : leftEncoder(leftEncoder), rightEncoder(rightEncoder), backEncoder(backEncoder)
+    Odometry()
     {
-        workerRunning = true;
-        worker = vex::thread(Odometry::vexThreadWrapper, this);
+        // workerRunning = true;
+        // worker = vex::thread(Odometry::vexThreadWrapper, this);
+        resetOdometry(0, 0, 0);
     };
 
     /* returns calculated pose */
     Pose getPose()
     {
-        mutex.lock();
-        Pose newPose = pose;
-        mutex.unlock();
-        return newPose;
+        // mutex.lock();
+        // Pose newPose = pose;
+        // mutex.unlock();
+        return pose;
     }
 
     void resetOdometry(double x, double y, double rad)
     {
-        mutex.lock();
+        // mutex.lock();
         pose = Pose{x, y, rad};
-        mutex.unlock();
+        // mutex.unlock();
+
+        leftEncoder.setPosition(0, vex::rotationUnits::rev);
+        rightEncoder.setPosition(0, vex::rotationUnits::rev);
+        backEncoder.setPosition(0, vex::rotationUnits::rev);
+
         setNewEncoderDistances(0, 0, 0);
     }
+
+    /**
+     * Updates odometry by reading encoder distances and calculating pose.
+     * Called every loop/tick by the worker thread
+     * */
+    void update();
 
     ~Odometry()
     {
         // stop worker thread
-        workerRunning = false;
-        worker.join();
+        // workerRunning = false;
+        // worker.join();
     }
 };
 

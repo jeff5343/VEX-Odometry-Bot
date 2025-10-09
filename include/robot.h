@@ -9,8 +9,6 @@ private:
     // subsystems
     Drivetrain drivetrain{};
 
-    const vex::controller controller{};
-
 public:
     /* called in pre_auton */
     void init();

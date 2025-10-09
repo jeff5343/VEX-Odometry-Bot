@@ -71,5 +71,5 @@ void Drivetrain::arcadeDrive(double x, double y)
 
 void Drivetrain::log()
 {
-    // odometry.getPose().print();
+    odometry.getPose().print();
 }
