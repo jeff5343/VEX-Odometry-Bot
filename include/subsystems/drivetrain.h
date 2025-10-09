@@ -28,9 +28,9 @@ private:
     vex::motor_group rightMotorGroup{topRightMotor, midRightMotor, botRightMotor};
 
     // encoders
-    vex::encoder leftEncoder{Ports::DRIVE_LEFT_ENCODER};
-    vex::encoder rightEncoder{Ports::DRIVE_RIGHT_ENCODER};
-    vex::encoder backEncoder{Ports::DRIVE_BOTTOM_ENCODER};
+    // vex::rotation leftEncoder{Ports::DRIVE_LEFT_ENCODER};
+    // vex::rotation rightEncoder{Ports::DRIVE_RIGHT_ENCODER};
+    // vex::rotation backEncoder{Ports::DRIVE_BOTTOM_ENCODER};
 
     // odometry
     Odometry odometry{leftEncoder, rightEncoder, backEncoder};
@@ -38,7 +38,6 @@ private:
     void setVelocityLeftMotors(double rpm);
     void setVelocityRightMotors(double rpm);
 
-public:
     Drivetrain();
 
     /* Stops all motors */

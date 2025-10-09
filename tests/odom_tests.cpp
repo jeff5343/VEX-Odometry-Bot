@@ -19,10 +19,10 @@
 class OdometryTest
 {
 private:
-    vex::encoder leftEncoder{0}, rightEncoder{0}, backEncoder{0};
+    vex::rotation leftEncoder{0}, rightEncoder{0}, backEncoder{0};
     Odometry odomTest{leftEncoder, rightEncoder, backEncoder};
 
-    void setMockEncoderDistInches(vex::encoder &leftEncoder, vex::encoder &rightEncoder, vex::encoder &backEncoder,
+    void setMockEncoderDistInches(vex::rotation &leftEncoder, vex::rotation &rightEncoder, vex::rotation &backEncoder,
                                   double leftDist, double rightDist, double backDist)
     {
         leftEncoder.setMockPosition(encoderDistToRevs(leftDist));

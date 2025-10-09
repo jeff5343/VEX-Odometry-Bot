@@ -33,9 +33,9 @@ private:
     const double DIST_CENTER_TO_LEFT_WHEEL = 7.25;
     const double DIST_CENTER_TO_BOT_WHEEL = 7.75;
 
-    vex::encoder &leftEncoder;
-    vex::encoder &rightEncoder;
-    vex::encoder &backEncoder;
+    vex::rotation &leftEncoder;
+    vex::rotation &rightEncoder;
+    vex::rotation &backEncoder;
 
     // distances based on encoders
     double leftDist = 0;
@@ -64,7 +64,6 @@ private:
         while (workerRunning)
         {
             update();
-            printf("hi!");
             vex::this_thread::sleep_for(10);
         }
         return 0;
@@ -86,7 +85,7 @@ public:
     // TODO: will remove later, but for testing the back wheel has a different radius
     static constexpr double BACK_WHEEL_RADIUS_INCHES = 2.0;
 
-    Odometry(vex::encoder &leftEncoder, vex::encoder &rightEncoder, vex::encoder &backEncoder)
+    Odometry(vex::rotation &leftEncoder, vex::rotation &rightEncoder, vex::rotation &backEncoder)
         : leftEncoder(leftEncoder), rightEncoder(rightEncoder), backEncoder(backEncoder)
     {
         workerRunning = true;
