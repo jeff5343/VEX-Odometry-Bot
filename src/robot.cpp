@@ -24,8 +24,7 @@ void Robot::usercontrolPeriodic()
     }
     if (std::fabs(x) > deadband || std::fabs(y) > deadband)
     {
-        drivetrain.setVelocityLeftMotors(50);
-        // drivetrain.arcadeDrive(x, y);
+        drivetrain.arcadeDrive(x, y);
     }
     else
     {
