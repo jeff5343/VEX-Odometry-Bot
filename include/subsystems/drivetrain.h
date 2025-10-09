@@ -15,17 +15,16 @@ private:
     static constexpr bool LEFT_MOTORS_INVERTED = true;
     static constexpr bool RIGHT_MOTORS_INVERTED = false;
 
-    // TODO: rename motors, mid motors are the motors that are elevated
-    // motors
-    vex::motor topLeftMotor{Ports::DRIVE_TOP_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
-    vex::motor midLeftMotor{Ports::DRIVE_MID_LEFT_MOTOR, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
-    vex::motor botLeftMotor{Ports::DRIVE_BOT_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
-    vex::motor topRightMotor{Ports::DRIVE_TOP_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
-    vex::motor midRightMotor{Ports::DRIVE_MID_RIGHT_MOTOR, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
-    vex::motor botRightMotor{Ports::DRIVE_BOT_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
+    // motors (top motors are the elevate ones)
+    vex::motor frontLeftMotor{Ports::DRIVE_FRONT_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
+    vex::motor topLeftMotor{Ports::DRIVE_TOP_LEFT_MOTOR, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
+    vex::motor backLeftMotor{Ports::DRIVE_BACK_LEFT_MOTOR, vex::ratio6_1, LEFT_MOTORS_INVERTED};
+    vex::motor frontRightMotor{Ports::DRIVE_FRONT_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
+    vex::motor topRightMotor{Ports::DRIVE_TOP_RIGHT_MOTOR, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
+    vex::motor backRightMotor{Ports::DRIVE_BACK_RIGHT_MOTOR, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
 
-    vex::motor_group leftMotorGroup{topLeftMotor, midLeftMotor, botLeftMotor};
-    vex::motor_group rightMotorGroup{topRightMotor, midRightMotor, botRightMotor};
+    vex::motor_group leftMotorGroup{frontLeftMotor, topLeftMotor, backLeftMotor};
+    vex::motor_group rightMotorGroup{frontRightMotor, topRightMotor, backRightMotor};
 
     // encoders
     // vex::rotation leftEncoder{Ports::DRIVE_LEFT_ENCODER};
@@ -33,8 +32,11 @@ private:
     // vex::rotation backEncoder{Ports::DRIVE_BOTTOM_ENCODER};
 
     // odometry
-    Odometry odometry{leftEncoder, rightEncoder, backEncoder};
+    // Odometry odometry{leftEncoder, rightEncoder, backEncoder};
 
+
+public:
+    // TODO: PUT BACK P:RIVATE!!
     void setVelocityLeftMotors(double rpm);
     void setVelocityRightMotors(double rpm);
 

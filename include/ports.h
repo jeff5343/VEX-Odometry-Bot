@@ -6,16 +6,16 @@
 class Ports
 {
 public:
+    static const int32_t DRIVE_FRONT_LEFT_MOTOR;
     static const int32_t DRIVE_TOP_LEFT_MOTOR;
-    static const int32_t DRIVE_MID_LEFT_MOTOR;
-    static const int32_t DRIVE_BOT_LEFT_MOTOR;
+    static const int32_t DRIVE_BACK_LEFT_MOTOR;
+    static const int32_t DRIVE_FRONT_RIGHT_MOTOR;
     static const int32_t DRIVE_TOP_RIGHT_MOTOR;
-    static const int32_t DRIVE_MID_RIGHT_MOTOR;
-    static const int32_t DRIVE_BOT_RIGHT_MOTOR;
+    static const int32_t DRIVE_BACK_RIGHT_MOTOR;
 
     static const int32_t DRIVE_LEFT_ENCODER;
     static const int32_t DRIVE_RIGHT_ENCODER;
-    static const int32_t DRIVE_BOTTOM_ENCODER;
+    static const int32_t DRIVE_BACK_ENCODER;
 };
 
 #endif
