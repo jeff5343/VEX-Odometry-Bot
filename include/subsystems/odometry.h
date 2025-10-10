@@ -29,13 +29,9 @@
 class Odometry
 {
 private:
-    const double DIST_CENTER_TO_RIGHT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_LEFT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_BOT_WHEEL = 7.75;
-
-    vex::encoder &leftEncoder;
-    vex::encoder &rightEncoder;
-    vex::encoder &backEncoder;
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.152634;
+    static constexpr double DIST_CENTER_TO_LEFT_WHEEL = 2.152634;
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
 
     // distances based on encoders
     double leftDist = 0;
@@ -64,7 +60,6 @@ private:
         while (workerRunning)
         {
             update();
-            printf("hi!");
             vex::this_thread::sleep_for(10);
         }
         return 0;
@@ -82,11 +77,13 @@ private:
     void setNewEncoderDistances(double leftDist, double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 1.6301; // 2.75 / 2.0;
+    // TODO: will remove later, but for testing the back wheel has a different radius
+    static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 
-    Odometry(vex::encoder &leftEncoder, vex::encoder &rightEncoder, vex::encoder &backEncoder)
-        : leftEncoder(leftEncoder), rightEncoder(rightEncoder), backEncoder(backEncoder)
+    Odometry()
     {
+        resetOdometry(0, 0, 0);
         workerRunning = true;
         worker = vex::thread(Odometry::vexThreadWrapper, this);
     };
@@ -105,6 +102,11 @@ public:
         mutex.lock();
         pose = Pose{x, y, rad};
         mutex.unlock();
+
+        leftEncoder.setPosition(0, vex::rotationUnits::rev);
+        rightEncoder.setPosition(0, vex::rotationUnits::rev);
+        backEncoder.setPosition(0, vex::rotationUnits::rev);
+
         setNewEncoderDistances(0, 0, 0);
     }
 

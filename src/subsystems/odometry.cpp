@@ -9,11 +9,13 @@
 void Odometry::updateEncoderDistances()
 {
     double wheelCircumference = 2 * M_PI * WHEEL_RADIUS_INCHES;
+    // TODO: remove after improved odom
+    double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
     double leftD = leftEncoder.position(vex::rev) * wheelCircumference;
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
-    double backD = backEncoder.position(vex::rev) * wheelCircumference;
+    double backD = backEncoder.position(vex::rev) * backWheelCircumference;
     mutex.unlock();
 
     setNewEncoderDistances(leftD, rightD, backD);
@@ -21,7 +23,7 @@ void Odometry::updateEncoderDistances()
 
 void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
 {
-    mutex.lock();
+    // mutex.lock();
     // update deltas
     dLeftDist = leftD - leftDist;
     dRightDist = rightD - rightDist;
@@ -31,7 +33,7 @@ void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
     leftDist = leftD;
     rightDist = rightD;
     backDist = backD;
-    mutex.unlock();
+    // mutex.unlock();
 }
 
 void Odometry::updatePose()
@@ -48,12 +50,12 @@ void Odometry::updatePose()
 
     // (used for debugging)
     // the distance the back wheel should have traveled if there was no drift
-    // double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
-    // printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
+    double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
+    printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
-    //  Y axis is relative side to side movement
     //  X axis is relative front and back movement
+    //  Y axis is relative side to side movement
     double relYDist, relXDist;
     if (dLDist == dRDist)
     {
@@ -103,6 +105,8 @@ void Odometry::updatePose()
 
 void Odometry::update()
 {
+    printf("l: %.3f, r: %.3f\n", leftDist, rightDist);
+
     updateEncoderDistances();
     updatePose();
 }
