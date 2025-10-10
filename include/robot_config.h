@@ -8,7 +8,7 @@
  * with the brain. I wasted so much time rip.
 */
 
-inline extern vex::brain Brain;
+inline extern vex::brain brain{};
 
 inline const vex::controller controller{};
 

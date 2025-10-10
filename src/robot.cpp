@@ -25,4 +25,13 @@ void Robot::usercontrolPeriodic()
 
     /* ODOMETRY TESTING: */
     drivetrain.log();
+
+    brain.Screen.clearLine();
+
+    brain.Screen.print("x: ");
+    brain.Screen.print(drivetrain.getPose().x);
+    brain.Screen.print(", y: ");
+    brain.Screen.print(drivetrain.getPose().y);
+    brain.Screen.print(", deg: ");
+    brain.Screen.print(drivetrain.getPose().radians * (180 / M_PI));
 }

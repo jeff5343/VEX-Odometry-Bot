@@ -50,8 +50,8 @@ void Odometry::updatePose()
 
     // (used for debugging)
     // the distance the back wheel should have traveled if there was no drift
-    // double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
-    // printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
+    double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
+    printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
     //  X axis is relative front and back movement
@@ -105,6 +105,8 @@ void Odometry::updatePose()
 
 void Odometry::update()
 {
+    printf("l: %.3f, r: %.3f\n", leftDist, rightDist);
+
     updateEncoderDistances();
     updatePose();
 }

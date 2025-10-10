@@ -37,6 +37,10 @@ public:
      * Should be called every loop, probably need better structure.
      */
     void log();
+
+    Pose getPose() {
+        return odometry.getPose();
+    }
 };
 
 #endif
